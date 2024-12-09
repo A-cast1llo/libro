@@ -3,6 +3,7 @@ package com.libreria.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import com.libreria.repository.LibroRepository;
 
 @RestController
 @RequestMapping("/apiv1/libros")
+@CrossOrigin(origins = "http://localhost:5173")
 public class LibroController {
 
     @Autowired
