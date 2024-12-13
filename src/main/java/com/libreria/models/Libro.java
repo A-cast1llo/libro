@@ -19,9 +19,10 @@ public class Libro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLibro;
 
-    @Column(nullable = false)
+    @Column(nullable = false )
     private String titulo;
 
+    @Column(nullable = false)
     private LocalDate fechaPublicacion;
 
     @ManyToOne(fetch = FetchType.EAGER)

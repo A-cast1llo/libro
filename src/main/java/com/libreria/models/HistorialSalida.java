@@ -12,12 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+
 @Entity
 @Data
-public class HistorialIngreso {
+public class HistorialSalida {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idIngreso;
+	private Long idSalida;
 
 	@ManyToOne
 	@JoinColumn(name = "id_libro", nullable = false)
@@ -34,3 +35,4 @@ public class HistorialIngreso {
 	private String motivo;
 
 }
+

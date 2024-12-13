@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.libreria.models.HistorialIngreso;
+import com.libreria.models.HistorialSalida;
 import com.libreria.repository.HistorialIngresoRepository;
+import com.libreria.repository.HistorialSalidaRepository;
 
 @RestController
 @RequestMapping("/apiv1/historial")
@@ -20,10 +22,19 @@ public class HistorialIngresoController {
 	@Autowired
 	private HistorialIngresoRepository historialIngresoRepository;
 	
+	@Autowired
+	private HistorialSalidaRepository historialSalidaRepository;
+
 	@GetMapping("/ingreso")
 	public ResponseEntity<List<HistorialIngreso>> listarHistorial() {
-	    List<HistorialIngreso> historial = historialIngresoRepository.findAll();
-	    return ResponseEntity.ok(historial);
+		List<HistorialIngreso> historial = historialIngresoRepository.findAll();
+		return ResponseEntity.ok(historial);
+	}
+	
+	@GetMapping("/salida")
+	public ResponseEntity<List<HistorialSalida>> listarSalida(){
+		List<HistorialSalida> historialSalida = historialSalidaRepository.findAll();
+		return ResponseEntity.ok(historialSalida);
 	}
 
 }
