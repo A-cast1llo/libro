@@ -91,7 +91,13 @@ public class StockController {
 			nuevoStock.setCantidadTotal(0);
 			return nuevoStock;
 		});
-		
+
+		// controlar salida si el stock es insuficiente
+		if (stockLibro.getCantidadTotal() < salidaDto.getCantidad()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("Stock insuficiente. Stock actual: " + stockLibro.getCantidadTotal());
+		}		
+
 		stockLibro.setCantidadTotal(stockLibro.getCantidadTotal() - salidaDto.getCantidad());
 		stockLibroRepository.save(stockLibro);
 		
