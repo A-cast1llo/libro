@@ -17,5 +17,4 @@ public class Autor {
     @Column(nullable = false)
     private String nombre;
 
-
 }

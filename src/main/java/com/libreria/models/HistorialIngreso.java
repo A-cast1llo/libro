@@ -33,4 +33,6 @@ public class HistorialIngreso {
 	@Column(nullable = false)
 	private String motivo;
 
+	
+
 }

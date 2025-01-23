@@ -16,4 +16,5 @@ public class StockLibro {
 
     @Column(nullable = false)
     private Integer cantidadTotal;
+
 }

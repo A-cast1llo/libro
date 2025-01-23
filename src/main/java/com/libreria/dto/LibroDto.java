@@ -9,4 +9,6 @@ public class LibroDto {
     private String titulo;
     private LocalDate fechaPublicacion;
     private Long idAutor;
+   
+    
 }

@@ -37,4 +37,17 @@ public class HistorialIngresoController {
 		return ResponseEntity.ok(historialSalida);
 	}
 
+    
+    @GetMapping("/entradas/total")
+    public ResponseEntity<Long> contarEntradas() {
+        long totalEntradas = historialIngresoRepository.count();
+        return ResponseEntity.ok(totalEntradas);
+    }
+
+    
+    @GetMapping("/salidas/total")
+    public ResponseEntity<Long> contarSalidas() {
+        long totalSalidas = historialSalidaRepository.count();
+        return ResponseEntity.ok(totalSalidas);
+    }
 }

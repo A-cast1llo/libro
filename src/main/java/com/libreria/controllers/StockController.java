@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.libreria.dto.HistorialIngresoDto;
 import com.libreria.dto.HistorialSalidaDto;
-import com.libreria.dto.StockLibroDto;
 import com.libreria.models.HistorialIngreso;
 import com.libreria.models.HistorialSalida;
 import com.libreria.models.Libro;
@@ -36,21 +36,15 @@ public class StockController {
 
 	@Autowired
 	private HistorialIngresoRepository historialIngresoRepository;
-	
+
 	@Autowired
 	private HistorialSalidaRepository historialSalidaRepository;
 
 	@GetMapping("/listar")
-	/*
-	 * public List<StockLibro> listarStock(){ return stockLibroRepository.findAll();
-	 * }
-	 */
-	public ResponseEntity<List<StockLibroDto>> listarStock() {
-		List<StockLibroDto> stockList = stockLibroRepository.findAll().stream()
-				.map(stock -> new StockLibroDto(stock.getLibro().getTitulo(), stock.getCantidadTotal())).toList();
-
-		return ResponseEntity.ok(stockList);
+	public List<StockLibro> listarLibrosConStock() {
+	    return stockLibroRepository.findByCantidadTotalGreaterThanEqual(1); 
 	}
+
 
 	@PostMapping("/registrar")
 	public ResponseEntity<String> registrarStock(@RequestBody HistorialIngresoDto ingresoDto) {
@@ -78,13 +72,13 @@ public class StockController {
 
 		return ResponseEntity.ok("Ingreso registrado correctamente");
 	}
-	
+
 	@PostMapping("/salidareg")
-	public ResponseEntity<String> registrarStockSalida(@RequestBody HistorialSalidaDto salidaDto){
-		
+	public ResponseEntity<String> registrarStockSalida(@RequestBody HistorialSalidaDto salidaDto) {
+
 		Libro libro = libroRepository.findById(salidaDto.getIdLibro())
 				.orElseThrow(() -> new RuntimeException("Libro no encontrado"));
-		
+
 		StockLibro stockLibro = stockLibroRepository.findByLibro(libro).orElseGet(() -> {
 			StockLibro nuevoStock = new StockLibro();
 			nuevoStock.setLibro(libro);
@@ -96,11 +90,11 @@ public class StockController {
 		if (stockLibro.getCantidadTotal() < salidaDto.getCantidad()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body("Stock insuficiente. Stock actual: " + stockLibro.getCantidadTotal());
-		}		
+		}
 
 		stockLibro.setCantidadTotal(stockLibro.getCantidadTotal() - salidaDto.getCantidad());
 		stockLibroRepository.save(stockLibro);
-		
+
 		// Crear registro en HistorialIngreso
 		HistorialSalida historialSalida = new HistorialSalida();
 		historialSalida.setLibro(libro);
@@ -108,7 +102,7 @@ public class StockController {
 		historialSalida.setFechaIngreso(LocalDateTime.now());
 		historialSalida.setMotivo(salidaDto.getMotivo());
 		historialSalidaRepository.save(historialSalida);
-		
+
 		return ResponseEntity.ok("Salida registrada correctamente");
 	}
 }

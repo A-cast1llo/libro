@@ -28,4 +28,5 @@ public class Libro {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_autor", nullable = false)
     private Autor autor;
+    
 }

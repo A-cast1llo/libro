@@ -6,4 +6,6 @@ import com.libreria.models.HistorialSalida;
 
 public interface HistorialSalidaRepository extends JpaRepository<HistorialSalida, Long>{
 
+	long count();
+	
 }

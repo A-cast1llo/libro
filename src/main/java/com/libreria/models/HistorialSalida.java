@@ -34,5 +34,8 @@ public class HistorialSalida {
 	@Column(nullable = false)
 	private String motivo;
 
+
+	
+
 }
 
