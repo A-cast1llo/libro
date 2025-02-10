@@ -17,29 +17,27 @@ public class StockActualizarController {
 	@Autowired
 	private StockLibroRepository stockLibroRepository;
 
-	@PostMapping("/actualizar")
-	public ResponseEntity<String> actualizarStock(@RequestBody StockLibroDto stockLibroDto) {
-		// Validar cantidad
-		if (stockLibroDto.getCantidad() == null || stockLibroDto.getCantidad() < 0) {
-			return ResponseEntity.badRequest().body("La cantidad debe ser mayor o igual a cero.");
-		}
+	@PutMapping("/actualizar")
+	public ResponseEntity<StockLibro> actualizarStock(@RequestBody StockLibroDto stockLibroDto) {
 
-		// Buscar el stock por titulo
-		Optional<StockLibro> stockOptional = stockLibroRepository.findAll().stream()
-				.filter(stock -> stock.getLibro().getTitulo().equalsIgnoreCase(stockLibroDto.getTituloLibro()))
-				.findFirst();
+	    if (stockLibroDto.getCantidad() == null || stockLibroDto.getCantidad() < 0) {
+	        return ResponseEntity.badRequest().build();
+	    }
 
-		if (stockOptional.isEmpty()) {
-			return ResponseEntity.badRequest().body(
-					"El libro con título '" + stockLibroDto.getTituloLibro() + "' no está registrado en el stock.");
-		}
+	    // Busca el id del stock por nombre del libro
+	    Optional<StockLibro> stockOptional = stockLibroRepository.findByLibroTituloIgnoreCase(stockLibroDto.getTituloLibro());
 
-		StockLibro stockLibro = stockOptional.get();
-		
-		// Stock nuevo
-		stockLibro.setCantidadTotal(stockLibroDto.getCantidad());
-		stockLibroRepository.save(stockLibro);
+	    // Verificar relacion con id 
+	    if (stockOptional.isEmpty()) {
+	        return ResponseEntity.badRequest().build();
+	    }
 
-		return ResponseEntity.ok("Stock actualizado correctamente. Nuevo total: " + stockLibro.getCantidadTotal());
+	    // Actualizar el stock del libro encontrado
+	    StockLibro stockLibro = stockOptional.get();
+	    stockLibro.setCantidadTotal(stockLibroDto.getCantidad());
+	    StockLibro stockActualizado = stockLibroRepository.save(stockLibro);
+
+	  
+	    return ResponseEntity.ok(stockActualizado);
 	}
 }

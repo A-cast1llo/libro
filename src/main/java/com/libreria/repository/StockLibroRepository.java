@@ -14,7 +14,9 @@ public interface StockLibroRepository extends JpaRepository<StockLibro, Long>{
 	Optional<StockLibro> findByLibro(Libro libro);
 	
 	List<StockLibro> findByCantidadTotalGreaterThanEqual(int cantidad);
+
+	Optional<StockLibro> findByLibroTituloIgnoreCase(String tituloLibro);
 	
-	Optional<StockLibro> findByLibroTituloIgnoreCase(String titulo);
+	
 
 }

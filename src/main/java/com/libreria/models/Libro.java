@@ -29,4 +29,6 @@ public class Libro {
     @JoinColumn(name = "id_autor", nullable = false)
     private Autor autor;
     
+    @Column(nullable = false)
+    private Integer activo; 
 }
